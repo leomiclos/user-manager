@@ -35,4 +35,17 @@ public class UsuarioService {
             return null;
         }
     }
+
+    // Método para atualizar um usuário existente
+    public Optional<Usuario> atualizarUsuario(Long id, Usuario usuarioAtualizado) {
+        return usuarioRepository.findById(id)
+                .map(usuarioExistente -> {
+                    // Atualiza os campos
+                    usuarioExistente.setNome(usuarioAtualizado.getNome());
+                    usuarioExistente.setEmail(usuarioAtualizado.getEmail());
+
+                    // Salva o usuário atualizado no repositório
+                    return usuarioRepository.save(usuarioExistente);
+                });
+    }
 }
