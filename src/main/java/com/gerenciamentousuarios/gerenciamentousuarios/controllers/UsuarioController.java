@@ -6,11 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@Api(tags = "Usuários", description = "Endpoints para gerenciamento de usuários")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -25,6 +30,7 @@ public class UsuarioController {
 
     //LISTAR TODOS OS USUÁRIOS
     @GetMapping
+    @ApiOperation("Lista todos os usuários")
     public List<Usuario> listarUsuarios() {
         return usuarioService.listarUsuarios();
     }
@@ -32,6 +38,7 @@ public class UsuarioController {
 
     //LISTAR USUÁRIO POR ID
     @GetMapping("/{id}")
+    @ApiOperation("Lista usuário por ID")
     public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Long id) {
         Optional<Usuario> usuario = usuarioService.buscarUsuarioPorId(id);
         return usuario.map(ResponseEntity::ok) //SE O USUÁRIO FOR ENCONTRADO, RETORNA 200
@@ -39,6 +46,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/inserir")
+    @ApiOperation("Insere um novo usuário")
     public ResponseEntity<Usuario> inserirUsuario(@RequestBody Usuario usuario) {
         Usuario novoUsuario = usuarioService.inserirUsuario(usuario);
         if (novoUsuario != null) {
@@ -49,6 +57,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation("Atualiza um usuário")
     public ResponseEntity<Usuario> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
         return usuarioService.atualizarUsuario(id, usuario)
                 .map(ResponseEntity::ok)
